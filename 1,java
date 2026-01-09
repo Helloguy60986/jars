@@ -1,0 +1,39 @@
+package com.example.dd4;
+
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
+
+public class DD4Client implements ClientModInitializer {
+
+    private boolean v1;
+    private MinecraftClient v2;
+    private Text v3;
+    private boolean v4;
+    private String v5;
+    private int v6;
+
+    public DD4Client() {
+        this.v1 = false;
+        this.v5 = "dd4 test success";
+        this.v6 = 0;
+    }
+
+    @Override
+    public void onInitializeClient() {
+        ClientTickEvents.END_CLIENT_TICK.register(new ClientTickEvents.EndTick() {
+            @Override
+            public void onEndTick(MinecraftClient v2) {
+                DD4Client.this.v2 = MinecraftClient.getInstance();
+                ++DD4Client.this.v6;
+                DD4Client.this.v4 = DD4Client.this.v2.player != null;
+                if (!DD4Client.this.v1 && DD4Client.this.v4) {
+                    DD4Client.this.v3 = Text.literal(DD4Client.this.v5);
+                    DD4Client.this.v2.player.sendMessage(DD4Client.this.v3, false);
+                    DD4Client.this.v1 = true;
+                }
+            }
+        });
+    }
+}
